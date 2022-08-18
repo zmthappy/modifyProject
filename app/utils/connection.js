@@ -9,7 +9,7 @@ var toConnection = function () {
     console.log("connneted----->");
   });
   mongoose.connection.on('error', function (err) {
-    printer.error('mongo_conn', err);
+    console.log('mongo_conn', err);
   });
 }
 

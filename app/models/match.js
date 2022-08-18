@@ -204,7 +204,7 @@ MatchSchema.statics.getById = function (mid, callback) {
 
 MatchSchema.statics.getByDate = function (date, callback) {
   // this.find({ 'date': date }).sort({ time: 1 }).exec(callback);
-  this.find({ 'date': date }, { time: 1 }, callback)
+  this.findOne({ 'date': date }, { time: 1 }, callback)
 }
 
 MatchSchema.statics.getJingcaiByDate = function (date, callback) {
@@ -256,7 +256,7 @@ MatchSchema.statics.getByQuery = function (query, limit, sort, callback) {
   this.find(query).limit(limit).sort(sort).exec(callback);
 }
 
-MatchSchema.statics.getMatch = function (query, callback) {
+MatchSchema.statics.getAllMatches = function (query, callback) {
   this.find(query, callback);
 }
 

@@ -7,23 +7,37 @@ var Match = require('./app/models/match'),
 var toMongoose = require('./app/utils/connection');
 
 
+// 重新组合获得的数据
+function resetDataArr(item) {
+  let analysisArr = [];
+  // item.forEach(item => {
+  let obj = {
+    odds: item.odds,
+    result: item.jingcai.spf.result,
+  }
+  analysisArr.push(obj);
+  // })
+  return analysisArr;
+}
 
+// 数据分析
+function resuleAnalysis(analysisArr) {
+
+}
 
 const queryBackMatch = function (e, match) {
+  // let analysisArr = [];
+  // let matchResult = [];
   if (!e) {
     // 数据只有一条时
     console.log(match.length);
     if (match.length === undefined) {
-      _.forEach(match, function (value, key) {
-        console.log(value, "value");
-      })
+      analysisArr = resetDataArr(match);
     }
     // 数据大于两条
     else if (match.length > 0) {
       match.forEach(item => {
-        _.forEach(item, function (value, key) {
-
-        })
+        analysisArr = resetDataArr(item);
       })
     } else {
       console.log("DATA ERROR");
@@ -32,21 +46,8 @@ const queryBackMatch = function (e, match) {
 }
 
 
-const queryBackTeam = function (err, team) {
-  if (!err) {
-    if (team.length === undefined) {
-      console.log(team);
-    } else if (team.length > 0) {
-      team.forEach(item => {
-        _.forEach(item, function (value, key) {
-          console.log(value, "value");
-        })
-      })
-    } else {
-      console.log("DATA ERROR");
-    }
-  }
-}
 
-Match.getByQuery({ 'date': "2022-08-09" }, 10, { time: -1 }, queryBackMatch)
-Team.getById(1605, queryBackTeam)
+
+
+// Match.getAllMatches({}, queryBackMatch)
+Match.getByDate("2022-08-16", queryBackMatch)

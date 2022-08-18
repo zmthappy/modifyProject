@@ -72,3 +72,27 @@ node viewer --team 皇马
 暂未完成，可参考 `./analyzer` 目录下的半成品文件自行设计。
 FLAnalyzer-not-complete-->引用出处
 
+const queryBackTeam = function (err, team) {
+  if (!err) {
+    if (team.length === undefined) {
+      console.log(team);
+    } else if (team.length > 0) {
+      team.forEach(item => {
+        _.forEach(item, async function (value, key) {
+          if (key == "tid") {
+            let team;
+            await Team.getById(value, function (err, data) {
+              if (err) {
+                team = data;
+                console.log(team, "team");
+              }
+            })
+          }
+          // console.log(value, "value");
+        })
+      })
+    } else {
+      console.log("DATA ERROR");
+    }
+  }
+}
