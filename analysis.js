@@ -4,14 +4,12 @@ var _ = require('lodash'),
   converter = require('./app/utils/converter');
 var Match = require('./app/models/match'),
   Team = require('./app/models/team');
-// var mongoose = require('mongoose'),
 var toMongoose = require('./app/utils/connection');
 
 
 
 
 const queryBackMatch = function (e, match) {
-  // console.log(match, match.length);
   if (!e) {
     console.log(match.length);
     if (match.length === undefined) {
@@ -26,7 +24,7 @@ const queryBackMatch = function (e, match) {
         })
       })
     } else {
-      console.log("ssssss");
+      console.log("DATA ERROR");
     }
   }
 }
@@ -35,7 +33,9 @@ const queryBackMatch = function (e, match) {
 const queryBackTeam = function (err, team) {
   if (!err) {
     if (team.length === undefined) {
-      console.log(team.mid);
+      console.log(team);
+    } else {
+      console.log("DATA ERROR");
     }
   }
 }
