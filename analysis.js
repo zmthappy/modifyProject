@@ -11,16 +11,18 @@ var toMongoose = require('./app/utils/connection');
 
 const queryBackMatch = function (e, match) {
   if (!e) {
+    // 数据只有一条时
     console.log(match.length);
     if (match.length === undefined) {
       _.forEach(match, function (value, key) {
         console.log(value, "value");
       })
     }
+    // 数据大于两条
     else if (match.length > 0) {
       match.forEach(item => {
         _.forEach(item, function (value, key) {
-          console.log(value, "value");
+
         })
       })
     } else {
@@ -34,6 +36,12 @@ const queryBackTeam = function (err, team) {
   if (!err) {
     if (team.length === undefined) {
       console.log(team);
+    } else if (team.length > 0) {
+      team.forEach(item => {
+        _.forEach(item, function (value, key) {
+          console.log(value, "value");
+        })
+      })
     } else {
       console.log("DATA ERROR");
     }
