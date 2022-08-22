@@ -1,6 +1,6 @@
 module.exports = {
   //抓取的最早日期
-  first_date: '2022-07-01',
+  first_date: '2020-09-01',
   dict: {
     JINGCAI: {
       'nspf': 'spf',

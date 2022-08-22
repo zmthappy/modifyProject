@@ -460,6 +460,7 @@ module.exports = function (day, next, force, skip) {
   var step = helper.step([
     {
       code: 'odds', func: function () {
+        console.log(day,"ssss");
         poster.get(URL.odds.replace('{day}', day), oddsStep);
       }
     },
