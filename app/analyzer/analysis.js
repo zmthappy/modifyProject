@@ -1,7 +1,6 @@
 var _ = require('lodash'),
   eventproxy = require('eventproxy'),
   dbconfig = require('../configs/database'),
-  oddArr = require('../configs/company'),
   converter = require('../utils/converter');
 const { asia } = require('../configs/company');
 var Match = require('../models/match'),
@@ -30,6 +29,12 @@ function resetDataArr(item) {
     result: item.jingcai,
   }
   return obj;
+}
+
+const Hierarchy = [];
+const oddArr = {
+  'europe':['average','ladbrokes', 'bet365','macau','victor','snai','william'],
+  'asia':['ladbrokes','bet365','macau'],
 }
 
 // 结构数据
@@ -84,62 +89,45 @@ function resuleAnalysis(analysisArr) {
   return deconstruction;
 }
 
-// const Hierarchy = {
-//   first: {
-//     range: [1.2, 1.35],
-//     win: {
-//       count: 0,
-//       flatMax: 0,
-//       flatMin: 0,
-//       negativeMax: 0,
-//       negativeMin: 0,
-//     },
-//   }
-// }
-
-
-
-
-
-
+// 最终的数据判断
 function judgmentData(dataArr, key) {
-  if (key == "now") {
-    _.each(dataArr, function (value, key) {
-      console.log(value);
-    })
-  } else {
-    console.log("first is not deal with");
-  }
+  _.each(dataArr, function (value, key) {
+    if (key == "now") {
+      // 欧赔数据
+    } else {
+      // 亚盘数据
+    }
+  })
+
 }
 
-function externalProcessing(value, key, type) {
-  if (oddArr.europe.indexOf(key) != -1) {
-    _.each(value, function (value, key) {
 
-    })
-  } else if (oddArr.asia.indexOf(key.substring(0, key.indexOf(asia) + 1)) != -1) {
 
-  }
+// 对数据的外部进行处理
+function externalProcessing(arr, type) {
+  _.each(arr,function(value,key){
+    if (oddArr.europe.indexOf(key) != -1) {
+     judgmentData(value)
+    } else if (oddArr.asia.indexOf(key.substring(0, key.indexOf(asia) + 1)) != -1) {
+      console.log("asia");
+    }
+  })
 }
 
-const Hierarchy = [];
 
+// 对数据的进行三段处理
 function analysisFun(arr) {
   _.each(arr, function (value, key) {
     let obj = {};
-    // if (oddArr.europe.indexOf(key) != -1) {
-    //   _.each(value, function (value, key) {
-    //   })
-    // } else if (oddArr.asia.indexOf(key.substring(0, key.indexOf(asia) + 1)) != -1) {
-    // } else {
-    console.log(arr, "arr");
-    if (key === "result") {
-      switch (parseInt(value)) {
-        case 3: externalProcessing(arr, 3); break;
-        case 1: externalProcessing(arr, 1); break;
-        default: externalProcessing(arr, 0);
+    _.each(value,function(item,key){
+      if (key == "result") {
+        switch (parseInt(item)) {
+          case 3: externalProcessing(value, 3); break;
+          case 1: externalProcessing(value, 1); break;
+          default: externalProcessing(value, 0);
+        }
       }
-    }
+    })
   })
 }
 
@@ -156,7 +144,6 @@ const queryBackMatch = function (e, match) {
     else if (match.length > 0) {
       match.forEach(item => {
         analysisArr.push(resetDataArr(item));
-        console.log(resuleAnalysis(analysisArr));
         analysisFun(resuleAnalysis(analysisArr))
       })
     } else {
