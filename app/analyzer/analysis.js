@@ -7,6 +7,43 @@ var Match = require('../models/match'),
   Team = require('../models/team');
 var toMongoose = require('../utils/connection');
 
+
+
+const Hierarchy = {};
+const oddArr = {
+  'europe': ['average', 'ladbrokes', 'bet365', 'macau', 'victor', 'snai', 'william'],
+  'asia': ['ladbrokes', 'bet365', 'macau'],
+}
+
+let endStructure = {
+  "0": {
+    'rang': [2.3, 2.6],
+  },
+  "0.25": {
+    'rang': [1.9, 2.3],
+  },
+  "0.5": {
+    'rang': [1.7, 1.9],
+  },
+  "0.75": {
+    'rang': [1.6, 1.7],
+  },
+  "1": {
+    'rang': [1.45, 1.6],
+  },
+  "1.25": {
+    'rang': [1.35, 1.45],
+  },
+  "1.5": {
+    'rang': [1.25, 1.35],
+  },
+  "1.75": {
+    'rang': [1.15, 1.25],
+  },
+  // "2": { 'rang': [1.7, 1.9] },
+  // "2.25": { 'rang': [1.7, 1.9] },
+  // "2.5": { 'rang': [1.7, 1.9] },
+};
 // 递归调用循环的次数
 function controlPieNumber(value, count) {
   count = count - 1;
@@ -31,11 +68,9 @@ function resetDataArr(item) {
   return obj;
 }
 
-const Hierarchy = [];
-const oddArr = {
-  'europe':['average','ladbrokes', 'bet365','macau','victor','snai','william'],
-  'asia':['ladbrokes','bet365','macau'],
-}
+
+// 赋值
+
 
 // 结构数据
 function resuleAnalysis(analysisArr) {
@@ -89,27 +124,35 @@ function resuleAnalysis(analysisArr) {
   return deconstruction;
 }
 
-// 最终的数据判断
-function judgmentData(dataArr, key) {
+function judgmentData(dataArr, attribute, type) {
   _.each(dataArr, function (value, key) {
     if (key == "now") {
-      // 欧赔数据
+      _.each(Hierarchy[type], function (rang, key) {
+        if (value[0] >= rang.rang[0] && value[0] < rang.rang[1]) {
+          // if (!Hierarchy[type][rang]?.[attribute + '3']) {
+          //   Hierarchy[type][rang]?.[attribute + '3'] = [0, 0];
+          // } else {
+          //   let left = Hierarchy[type][rang][attribute + '3'];
+          //   if (left[0] == 0 && left[1] == 0) {
+          //     left[0] = left[1] = value[0]
+          //   }
+          // }
+        }
+      })
     } else {
-      // 亚盘数据
     }
   })
-
 }
 
 
 
 // 对数据的外部进行处理
 function externalProcessing(arr, type) {
-  _.each(arr,function(value,key){
+  _.each(arr, function (value, key) {
     if (oddArr.europe.indexOf(key) != -1) {
-     judgmentData(value)
+      judgmentData(value, key, type)
     } else if (oddArr.asia.indexOf(key.substring(0, key.indexOf(asia) + 1)) != -1) {
-      console.log("asia");
+      judgmentData(value, key, type)
     }
   })
 }
@@ -119,12 +162,20 @@ function externalProcessing(arr, type) {
 function analysisFun(arr) {
   _.each(arr, function (value, key) {
     let obj = {};
-    _.each(value,function(item,key){
+    _.each(value, function (item, key) {
       if (key == "result") {
         switch (parseInt(item)) {
-          case 3: externalProcessing(value, 3); break;
-          case 1: externalProcessing(value, 1); break;
-          default: externalProcessing(value, 0);
+          case 3:
+            Hierarchy['3'] = endStructure;
+            externalProcessing(value, '3');
+            break;
+          case 1:
+            Hierarchy['1'] = endStructure;
+            externalProcessing(value, "1");
+            break;
+          default:
+            Hierarchy['0'] = endStructure;
+            externalProcessing(value, "0");
         }
       }
     })
