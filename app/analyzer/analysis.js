@@ -69,7 +69,6 @@ function resetDataArr(item) {
 }
 
 
-// 赋值
 
 
 // 结构数据
@@ -120,43 +119,97 @@ function resuleAnalysis(analysisArr) {
     })
     deconstruction.push(obj)
   })
-  // console.log(deconstruction.length,'返回的数据');
   return deconstruction;
 }
+
+// function judgmentData(dataArr, attribute, type) {
+//   _.each(dataArr, function (value, key) {
+//     if (key == "now") {
+//       _.each(Hierarchy[type], function (rang, key) {
+//         if (!Hierarchy[type][key]?.[attribute + '3']) {
+//           Hierarchy[type][key][attribute + '3'] = [0, 0]
+//         }
+//         if (value[0] >= rang.rang[0] && value[0] < rang.rang[1]) {
+//           // console.log(Hierarchy[type][rang]?.[attribute + '3'], attribute + '3');
+//           let left = Hierarchy[type][key][attribute + '3'];
+//           if (left[0] == 0 && left[1] == 0) {
+//             left[0] = left[1] = value[0]
+//           }
+//           console.log(left);
+//         }
+//       })
+//     } else {
+//     }
+//   })
+// }
+
 
 function judgmentData(dataArr, attribute, type) {
   _.each(dataArr, function (value, key) {
     if (key == "now") {
-      _.each(Hierarchy[type], function (rang, key) {
-        if (value[0] >= rang.rang[0] && value[0] < rang.rang[1]) {
-          // if (!Hierarchy[type][rang]?.[attribute + '3']) {
-          //   Hierarchy[type][rang]?.[attribute + '3'] = [0, 0];
-          // } else {
-          //   let left = Hierarchy[type][rang][attribute + '3'];
-          //   if (left[0] == 0 && left[1] == 0) {
-          //     left[0] = left[1] = value[0]
-          //   }
-          // }
+      if (!Hierarchy[attribute][type]?.max) {
+        Hierarchy[attribute][type] = {
+          'max': [],
+          'min': [],
         }
-      })
-    } else {
+      }
+      let innermostLayer = Hierarchy[attribute][type];
+      if (innermostLayer.max.length == 0 && innermostLayer.max.length == 0) {
+        obj = {
+          'leftOdd': value[0],
+          "counter": 1,
+        }
+        innermostLayer.max.push(obj);
+        innermostLayer.min.push(obj);
+      } else {
+
+      }
+      // if (Hierarchy[attribute][type][max]) {
+      //   //           let left = Hierarchy[type][key][attribute + '3'];
+      //   //           if (left[0] == 0 && left[1] == 0) {
+      //   //             left[0] = left[1] = value[0]
+      //   //           }
+      //   //           console.log(left);
+      //   //         }
+      // }
+      console.log(innermostLayer.max, "H");
     }
   })
 }
 
+function assignment(arrType) {
+
+}
 
 
 // 对数据的外部进行处理
-function externalProcessing(arr, type) {
-  _.each(arr, function (value, key) {
+// function externalProcessing(arr, type) {
+//   _.each(arr, function (value, key) {
+//     if (oddArr.europe.indexOf(key) != -1) {
+//       judgmentData(value, key, type)
+//     } else if (oddArr.asia.indexOf(key.substring(0, key.indexOf(asia) + 1)) != -1) {
+//       judgmentData(value, key, type)
+//     }
+//   })
+// }
+
+
+function externalProcessing(value, type) {
+  _.each(value, function (item, key) {
     if (oddArr.europe.indexOf(key) != -1) {
-      judgmentData(value, key, type)
-    } else if (oddArr.asia.indexOf(key.substring(0, key.indexOf(asia) + 1)) != -1) {
-      judgmentData(value, key, type)
+      if (!Hierarchy?.[key]) {
+        Hierarchy[key] = {
+          "3": {},
+          "1": {},
+          "0": {},
+        };
+      }
+      judgmentData(item, key, type);
+    } else {
+      // 后续处理
     }
   })
 }
-
 
 // 对数据的进行三段处理
 function analysisFun(arr) {
@@ -166,15 +219,12 @@ function analysisFun(arr) {
       if (key == "result") {
         switch (parseInt(item)) {
           case 3:
-            Hierarchy['3'] = endStructure;
-            externalProcessing(value, '3');
+            externalProcessing(value, "3");
             break;
           case 1:
-            Hierarchy['1'] = endStructure;
             externalProcessing(value, "1");
             break;
           default:
-            Hierarchy['0'] = endStructure;
             externalProcessing(value, "0");
         }
       }
