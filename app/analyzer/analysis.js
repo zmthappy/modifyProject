@@ -161,18 +161,25 @@ function resuleAnalysis(analysisArr) {
 
 //   }
 
+// const result = ['3', '1', '0']
+
+
 function judgmentData(dataArr, attribute, type) {
   _.each(dataArr, function (value, key) {
     _.each(endStructure, function (asiaValue, asiaKey) {
       let end = Hierarchy[type][attribute][asiaKey];
-      if (!Hierarchy[type][attribute][asiaKey]?.max && !Hierarchy[type][attribute][asiaKey]?.min) {
-        end['max'] = end['min'] = {
-          "3": [],
+      if (!Hierarchy[type][attribute][asiaKey]?.oddsRanges) {
+        end['oddsRanges'] = {
+          '3': [],
           "1": [],
           '0': [],
         }
       }
-      if (key == "now") { }
+      if (key == "now") {
+        // console.log(Hierarchy[type][attribute][asiaKey])
+        if (asiaValue.range >= value[1] && asiaValue.range < value[1]) {
+        }
+      }
     })
     //   let innermostLayer = Hierarchy[attribute][type];
     //   if (innermostLayer.max.length == 0 && innermostLayer.max.length == 0) {
@@ -184,8 +191,7 @@ function judgmentData(dataArr, attribute, type) {
     //     innermostLayer.min.push(obj);
     //   } else {
   })
-  console.log(Hierarchy[type][attribute], "Hierarchy");
-  // console.log(innermostLayer.max, "H");
+  // console.log(Hierarchy[type][attribute], "Hierarchy");
 }
 
 function assignment(arrType) {
@@ -275,5 +281,12 @@ const queryBackMatch = function (e, match) {
 
 
 
-Match.getByDateLimit("2022-08-06", 1, queryBackMatch)
+
 // Match.getById(1057594, queryBackMatch)
+var start = function () {
+  Match.getByDateLimit("2022-08-06", 1, queryBackMatch)
+}
+
+start()
+
+// module.exports = start;
