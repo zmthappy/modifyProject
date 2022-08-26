@@ -17,32 +17,32 @@ const oddArr = {
 
 let endStructure = {
   "0": {
-    'rang': [2.3, 2.6],
+    'range': [2.3, 2.6],
   },
   "0.25": {
-    'rang': [1.9, 2.3],
+    'range': [1.9, 2.3],
   },
   "0.5": {
-    'rang': [1.7, 1.9],
+    'range': [1.7, 1.9],
   },
   "0.75": {
-    'rang': [1.6, 1.7],
+    'range': [1.6, 1.7],
   },
   "1": {
-    'rang': [1.45, 1.6],
+    'range': [1.45, 1.6],
   },
   "1.25": {
-    'rang': [1.35, 1.45],
+    'range': [1.35, 1.45],
   },
   "1.5": {
-    'rang': [1.25, 1.35],
+    'range': [1.25, 1.35],
   },
   "1.75": {
-    'rang': [1.15, 1.25],
+    'range': [1.15, 1.25],
   },
-  // "2": { 'rang': [1.7, 1.9] },
-  // "2.25": { 'rang': [1.7, 1.9] },
-  // "2.5": { 'rang': [1.7, 1.9] },
+  // "2": { 'range': [1.7, 1.9] },
+  // "2.25": { 'range': [1.7, 1.9] },
+  // "2.5": { 'range': [1.7, 1.9] },
 };
 // 递归调用循环的次数
 function controlPieNumber(value, count) {
@@ -125,12 +125,12 @@ function resuleAnalysis(analysisArr) {
 // function judgmentData(dataArr, attribute, type) {
 //   _.each(dataArr, function (value, key) {
 //     if (key == "now") {
-//       _.each(Hierarchy[type], function (rang, key) {
+//       _.each(Hierarchy[type], function (range, key) {
 //         if (!Hierarchy[type][key]?.[attribute + '3']) {
 //           Hierarchy[type][key][attribute + '3'] = [0, 0]
 //         }
-//         if (value[0] >= rang.rang[0] && value[0] < rang.rang[1]) {
-//           // console.log(Hierarchy[type][rang]?.[attribute + '3'], attribute + '3');
+//         if (value[0] >= range.range[0] && value[0] < range.range[1]) {
+//           // console.log(Hierarchy[type][range]?.[attribute + '3'], attribute + '3');
 //           let left = Hierarchy[type][key][attribute + '3'];
 //           if (left[0] == 0 && left[1] == 0) {
 //             left[0] = left[1] = value[0]
@@ -141,40 +141,51 @@ function resuleAnalysis(analysisArr) {
 //     } else {
 //     }
 //   })
-// }
+// // }
+// if (key == "now") {
+//   if (!Hierarchy[attribute]?.max) {
+//     Hierarchy[attribute][type] = {
+//       'max': [],
+//       'min': [],
+//     }
+//   }
+//   let innermostLayer = Hierarchy[attribute][type];
+//   if (innermostLayer.max.length == 0 && innermostLayer.max.length == 0) {
+//     obj = {
+//       'leftOdd': value[0],
+//       "counter": 1,
+//     }
+//     innermostLayer.max.push(obj);
+//     innermostLayer.min.push(obj);
+//   } else {
 
+//   }
 
 function judgmentData(dataArr, attribute, type) {
   _.each(dataArr, function (value, key) {
-    if (key == "now") {
-      if (!Hierarchy[attribute][type]?.max) {
-        Hierarchy[attribute][type] = {
-          'max': [],
-          'min': [],
+    _.each(endStructure, function (asiaValue, asiaKey) {
+      let end = Hierarchy[type][attribute][asiaKey];
+      if (!Hierarchy[type][attribute][asiaKey]?.max && !Hierarchy[type][attribute][asiaKey]?.min) {
+        end['max'] = end['min'] = {
+          "3": [],
+          "1": [],
+          '0': [],
         }
       }
-      let innermostLayer = Hierarchy[attribute][type];
-      if (innermostLayer.max.length == 0 && innermostLayer.max.length == 0) {
-        obj = {
-          'leftOdd': value[0],
-          "counter": 1,
-        }
-        innermostLayer.max.push(obj);
-        innermostLayer.min.push(obj);
-      } else {
-
-      }
-      // if (Hierarchy[attribute][type][max]) {
-      //   //           let left = Hierarchy[type][key][attribute + '3'];
-      //   //           if (left[0] == 0 && left[1] == 0) {
-      //   //             left[0] = left[1] = value[0]
-      //   //           }
-      //   //           console.log(left);
-      //   //         }
-      // }
-      console.log(innermostLayer.max, "H");
-    }
+      if (key == "now") { }
+    })
+    //   let innermostLayer = Hierarchy[attribute][type];
+    //   if (innermostLayer.max.length == 0 && innermostLayer.max.length == 0) {
+    //     obj = {
+    //       'leftOdd': value[0],
+    //       "counter": 1,
+    //     }
+    //     innermostLayer.max.push(obj);
+    //     innermostLayer.min.push(obj);
+    //   } else {
   })
+  console.log(Hierarchy[type][attribute], "Hierarchy");
+  // console.log(innermostLayer.max, "H");
 }
 
 function assignment(arrType) {
@@ -194,16 +205,20 @@ function assignment(arrType) {
 // }
 
 
+// Hierarchy[type][key] = {
+//   "3": {},
+//   "1": {},
+//   "0": {},
+// };
+
 function externalProcessing(value, type) {
+
   _.each(value, function (item, key) {
     if (oddArr.europe.indexOf(key) != -1) {
       if (!Hierarchy?.[key]) {
-        Hierarchy[key] = {
-          "3": {},
-          "1": {},
-          "0": {},
-        };
+        Hierarchy[type][key] = endStructure;
       }
+      // item==>属性值；key==>属性；type=>类型
       judgmentData(item, key, type);
     } else {
       // 后续处理
@@ -219,12 +234,15 @@ function analysisFun(arr) {
       if (key == "result") {
         switch (parseInt(item)) {
           case 3:
+            Hierarchy['3'] = {};
             externalProcessing(value, "3");
             break;
           case 1:
+            Hierarchy['1'] = {};
             externalProcessing(value, "1");
             break;
           default:
+            Hierarchy['0'] = {};
             externalProcessing(value, "0");
         }
       }
